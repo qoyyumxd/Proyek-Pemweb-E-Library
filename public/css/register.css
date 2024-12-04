@@ -1,0 +1,19 @@
+/* Register Link on Login Page */
+.btn-register-link {
+    text-decoration: none;
+    color: #007bff;
+    font-weight: bold;
+}
+
+.btn-register-link:hover {
+    color: #0056b3;
+}
+
+/* Form Role Select */
+form select {
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 14px;
+}
