@@ -3,31 +3,32 @@
 namespace App\Http\Controllers;
 
 use App\Models\Book;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 class BookController extends Controller
 {
 
-    public function adminIndex()
-    {
-        $books = Book::all();
+    public function index()
+{
+    if (Auth::user()->role === 'admin') {
+        // Data untuk admin
         $books = Book::withCount('transactions')->get();
-        $bookTitles = $books->pluck('title')->toArray(); // Judul buku
-        $borrowCounts = $books->pluck('transactions_count')->toArray(); // Jumlah peminjaman per buku
-    return view('admin.books.index', compact('books'), [
-        'bookTitles' => $bookTitles,
-        'borrowCounts' => $borrowCounts
-    ]);
-    }
+        $bookTitles = $books->pluck('title')->toArray();
+        $borrowCounts = $books->pluck('transactions_count')->toArray();
 
-    public function siswaIndex() {
+        return view('admin.books.index', compact('books'), [
+            'bookTitles' => $bookTitles,
+            'borrowCounts' => $borrowCounts,
+        ]);
+    } elseif (Auth::user()->role === 'siswa') {
+        // Data untuk siswa
         $books = Book::all();
         return view('siswa.books.index', compact('books'));
     }
-    public function create()
-    {
-        return view('admin.books.create');
-    }
+
+    abort(403, 'Unauthorized action.');
+}
 
     public function store(Request $request)
     {

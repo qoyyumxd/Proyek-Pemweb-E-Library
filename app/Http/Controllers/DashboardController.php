@@ -10,12 +10,14 @@ use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
-    public function siswaIndex() {
+    public function index() 
+    {
+        if (Auth::user()->role === 'siswa') {
+
         $books = Book::all();
         return view('siswa.dashboard', compact('books'));
-    }
-    public function adminIndex()
-{
+
+    } elseif (Auth::user()->role === 'admin') {
     $borrowToday = Transaction::whereDate('borrow_date', today())->count();
     $borrowThisMonth = Transaction::whereMonth('borrow_date', now()->month)->count();
     $borrowThisYear = Transaction::whereYear('borrow_date', now()->year)->count();
@@ -40,6 +42,8 @@ class DashboardController extends Controller
         'bookTitles' => $bookTitles,
         'borrowCounts' => $borrowCounts
     ]);
+}
+        abort(403, 'Unauthorized action.');
 }
 
     public function getStats()
