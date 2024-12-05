@@ -3,11 +3,10 @@
 @section('content')
 <div class="container">
     <h1>Dashboard Kepala Perpustakaan</h1>
-
-    <!-- Statistik -->
     <div class="row">
-        <div class="col-md-4">
-            <div class="card bg-primary text-white">
+        <!-- Kartu Total Buku -->
+        <div class="col-md-4 mb-3">
+            <div class="card bg-primary text-white h-100">
                 <div class="card-body">
                     <h5>Total Buku</h5>
                     <p>{{ $totalBooks }} Buku</p>
@@ -15,17 +14,23 @@
             </div>
         </div>
         
-        <div class="card bg-success text-white">
-            <div class="card-body">
-                <h5>Total Siswa</h5>
-                <p>{{ $totalStudents }} Siswa</p>
+        <!-- Kartu Total Siswa -->
+        <div class="col-md-4 mb-3">
+            <div class="card bg-success text-white h-100">
+                <div class="card-body">
+                    <h5>Total Siswa</h5>
+                    <p>{{ $totalStudents }} Siswa</p>
+                </div>
             </div>
         </div>
         
-        <div class="card bg-warning text-dark">
-            <div class="card-body">
-                <h5>Buku Sedang Dipinjam</h5>
-                <p>{{ $borrowedBooks }} Buku</p>
+        <!-- Kartu Buku Dipinjam -->
+        <div class="col-md-4 mb-3">
+            <div class="card bg-warning text-dark h-100">
+                <div class="card-body">
+                    <h5>Buku Sedang Dipinjam</h5>
+                    <p>{{ $borrowedBooks }} Buku</p>
+                </div>
             </div>
         </div>
     </div>

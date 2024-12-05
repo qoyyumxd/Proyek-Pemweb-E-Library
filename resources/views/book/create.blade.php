@@ -47,8 +47,7 @@
                 data: $(this).serialize(),
                 success: function(response) {
                     alert('Buku berhasil disimpan!');
-                    location.reload(); // Refresh halaman
-                },
+                    location.reload();
                 error: function(response) {
                     alert('Gagal menyimpan buku.');
                 }
