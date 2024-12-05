@@ -45,11 +45,11 @@ Route::middleware(['auth'])->group(function(){
 
 Route::middleware(['auth'])->group(function () {
     Route::resource('books', BookController::class)
-        ->middleware(['auth',  'izinAkses:admin']);
+        ->middleware(  ['auth', 'izinAkses:admin']);
     Route::resource('students', StudentController::class)
-    ->middleware(['auth',  'izinAkses:admin']);
+        ->middleware(  'izinAkses:admin');
     Route::resource('transactions', TransactionController::class)
-    ->middleware(['auth',  'izinAkses:admin']);
+        ->middleware(  'izinAkses:admin');
 });
 
 Route::get('/api/dashboard-stats', [DashboardController::class, 'getStats'])->name('api.dashboard.stats');
@@ -59,10 +59,9 @@ Route::post('/borrow', [BorrowController::class, 'store'])->name('borrow.store')
 
 Route::get('/admin/transactions', [TransactionController::class, 'index'])->name('admin.transactions.index');
 
-Route::resource('/admin/books', BookController::class);
-Route::get('/admin/books', [BookController::class, 'adminIndex'])->name('books.adminIndex');
-
 Route::resource('/admin/students', StudentController::class);
+
+Route::get('/books', [BookController::class, 'index'])->name('books.index')->middleware(['auth'], 'izinAkses:admin');
 
 Route::patch('/admin/transactions/{id}/return', [TransactionController::class, 'returnBook'])->name('admin.transactions.return');
 
@@ -70,7 +69,7 @@ Route::get('/head/dashboard', [HeadController::class, 'index'])->name('head.dash
 
 Route::get('/admin/reports', [TransactionController::class, 'report'])->name('admin.reports.index');
 
-Route::get('/admin/dashboard', [DashboardController::class, 'adminIndex'])->name('admin.dashboard');
+Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard')->middleware(['auth'], 'izinAkses:admin');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [StudentDashboardController::class, 'index'])
@@ -86,7 +85,11 @@ Route::post('/borrow/{book}', [TransactionController::class, 'borrowBook'])->nam
 Route::get('/borrow/{id}', [TransactionController::class, 'create'])->name('borrow.form');
 Route::post('/borrow/{id}', [TransactionController::class, 'store'])->name('borrow.submit');
 
-Route::middleware(['auth', 'role:kepala_perpustakaan'])->group(function () {
-    Route::get('/kepala/dashboard', [HeadController::class, 'index'])->name('kepala.dashboard');
-    Route::get('/kepala/reports', [HeadController::class, 'reports'])->name('kepala.reports');
+Route::middleware(['auth'])->group(function () {
+    Route::get('/kepala/dashboard', [HeadController::class, 'index'])
+        ->name('kepala.dashboard')
+        ->middleware(['auth'], 'izinAkses:kepala_perpustakaan');
+    Route::get('/kepala/reports', [HeadController::class, 'reports'])
+        ->name('kepala.reports')
+        ->middleware(['auth'], 'izinAkses:kepala_perpustakaan');
 });
